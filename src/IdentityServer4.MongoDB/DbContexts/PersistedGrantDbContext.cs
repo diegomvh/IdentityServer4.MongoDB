@@ -5,6 +5,7 @@
 using System;
 using IdentityServer4.MongoDB.Interfaces;
 using IdentityServer4.MongoDB.Options;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
 namespace IdentityServer4.MongoDB.DbContexts
@@ -12,11 +13,15 @@ namespace IdentityServer4.MongoDB.DbContexts
     public class PersistedGrantDbContext : IPersistedGrantDbContext
     {
         private readonly OperationalStoreOptions storeOptions;
+        private readonly IMongoDatabase db;
 
-        public PersistedGrantDbContext(IMongoDatabase db, OperationalStoreOptions storeOptions)
+        public PersistedGrantDbContext(IOptions<MongoOptions> mongoOptions, OperationalStoreOptions storeOptions)
         {
             if (storeOptions == null) throw new ArgumentNullException(nameof(storeOptions));
             this.storeOptions = storeOptions;
+
+            var client = new MongoClient(mongoOptions.Value.ConnectionString);
+            db = client.GetDatabase(mongoOptions.Value.DatabaseName);
             PersistedGrants = db.GetCollection<Documents.PersistedGrant>(storeOptions.PersistedGrants);
         }
 
