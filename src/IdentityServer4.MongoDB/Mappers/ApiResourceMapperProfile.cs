@@ -14,28 +14,28 @@ namespace IdentityServer4.MongoDB.Mappers
     /// </summary>
     public class ApiResourceMapperProfile : Profile
     {
-        /// <summary>
-        /// <see cref="ApiResourceMapperProfile"/>
-        /// </summary>
         public ApiResourceMapperProfile()
         {
-            // entity to model
-            CreateMap<ApiResource, Models.ApiResource>(MemberList.Destination)
-                .ForMember(x => x.ApiSecrets, opt => opt.MapFrom(src => src.ApiSecrets.Select(x => x)))
-                .ForMember(x => x.Scopes, opt => opt.MapFrom(src => src.Scopes.Select(x => x)))
-                .ForMember(x => x.UserClaims, opts => opts.MapFrom(src => src.UserClaims.Select(x => x)));
-            CreateMap<Secret, Models.Secret>(MemberList.Destination);
-            CreateMap<Scope, Models.Scope>(MemberList.Destination)
-                .ForMember(x => x.UserClaims, opt => opt.MapFrom(src => src.UserClaims.Select(x => x)));
+            // document to model
+            CreateMap<Documents.ApiResource, Models.ApiResource>(MemberList.Destination)
+                .ForMember(x => x.ApiSecrets, opt => 
+                    opt.MapFrom(src => src.ApiSecrets.Select(x => new Models.Secret(x.Value, x.Description, x.Expiration) { Type = x.Type })))
+                .ForMember(x => x.Scopes, opt => 
+                    opt.MapFrom(src => src.Scopes.Select(x => new Models.Scope(x.Name, x.DisplayName, x.UserClaims) { 
+                        Required = x.Required, 
+                        Emphasize = x.Emphasize, 
+                        ShowInDiscoveryDocument = x.ShowInDiscoveryDocument })));
+                
+            // model to document
+            CreateMap<Models.ApiResource, Documents.ApiResource>(MemberList.Source)
+                .ForMember(x => x.ApiSecrets, opt => 
+                    opt.MapFrom(src => src.ApiSecrets.Select(x => new Documents.Secret(x.Value, x.Description, x.Expiration) { Type = x.Type })))
+                .ForMember(x => x.Scopes, opt => 
+                    opt.MapFrom(src => src.Scopes.Select(x => new Documents.Scope(x.Name, x.DisplayName, x.UserClaims) { 
+                        Required = x.Required, 
+                        Emphasize = x.Emphasize, 
+                        ShowInDiscoveryDocument = x.ShowInDiscoveryDocument })));
 
-            // model to entity
-            CreateMap<Models.ApiResource, ApiResource>(MemberList.Source)
-                .ForMember(x => x.ApiSecrets, opts => opts.MapFrom(src => src.ApiSecrets.Select(x => x)))
-                .ForMember(x => x.Scopes, opts => opts.MapFrom(src => src.Scopes.Select(x => x)))
-                .ForMember(x => x.UserClaims, opts => opts.MapFrom(src => src.UserClaims.Select(x => x)));
-            CreateMap<Models.Secret, Secret>(MemberList.Source);
-            CreateMap<Models.Scope, Scope>(MemberList.Source)
-                .ForMember(x => x.UserClaims, opts => opts.MapFrom(src => src.UserClaims.Select(x => x )));
         }
     }
 }

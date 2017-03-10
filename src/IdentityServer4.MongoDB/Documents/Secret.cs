@@ -7,7 +7,7 @@ using static IdentityServer4.IdentityServerConstants;
 
 namespace IdentityServer4.MongoDB.Documents
 {
-    public abstract class Secret
+    public class Secret
     {
         public Secret()
         {

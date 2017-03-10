@@ -3,8 +3,6 @@
 
 
 using System;
-using System.Threading.Tasks;
-using IdentityServer4.MongoDB.Documents;
 using IdentityServer4.MongoDB.Interfaces;
 using IdentityServer4.MongoDB.Options;
 using Microsoft.Extensions.Options;
@@ -15,7 +13,7 @@ namespace IdentityServer4.MongoDB.DbContexts
     public class ConfigurationDbContext : IConfigurationDbContext
     {
         private readonly ConfigurationStoreOptions storeOptions;
-        private readonly IMongoDatabase db;
+        public readonly IMongoDatabase Database;
 
         public ConfigurationDbContext(IOptions<MongoOptions> mongoOptions, ConfigurationStoreOptions storeOptions)
         {
@@ -23,19 +21,14 @@ namespace IdentityServer4.MongoDB.DbContexts
             this.storeOptions = storeOptions;
 
             var client = new MongoClient(mongoOptions.Value.ConnectionString);
-            db = client.GetDatabase(mongoOptions.Value.DatabaseName);
-            Clients = db.GetCollection<Documents.Client>(storeOptions.Clients);
-            IdentityResources = db.GetCollection<Documents.IdentityResource>(storeOptions.IdentityResources);
-            ApiResources = db.GetCollection<Documents.ApiResource>(storeOptions.ApiResources);
+            Database = client.GetDatabase(mongoOptions.Value.DatabaseName);
+            Clients = Database.GetCollection<Documents.Client>(storeOptions.Clients);
+            IdentityResources = Database.GetCollection<Documents.IdentityResource>(storeOptions.IdentityResources);
+            ApiResources = Database.GetCollection<Documents.ApiResource>(storeOptions.ApiResources);
         }
 
         public IMongoCollection<Documents.Client> Clients { get; set; }
         public IMongoCollection<Documents.IdentityResource> IdentityResources { get; set; }
         public IMongoCollection<Documents.ApiResource> ApiResources { get; set; }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

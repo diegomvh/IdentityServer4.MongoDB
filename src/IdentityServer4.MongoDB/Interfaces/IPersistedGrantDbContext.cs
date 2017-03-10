@@ -9,7 +9,7 @@ using MongoDB.Driver;
 
 namespace IdentityServer4.MongoDB.Interfaces
 {
-    public interface IPersistedGrantDbContext : IDisposable
+    public interface IPersistedGrantDbContext
     {
         IMongoCollection<Documents.PersistedGrant> PersistedGrants { get; set; }
     }

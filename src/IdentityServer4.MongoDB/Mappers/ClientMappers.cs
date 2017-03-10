@@ -14,7 +14,7 @@ namespace IdentityServer4.MongoDB.Mappers
                 .CreateMapper();
         }
 
-        internal static IMapper Mapper { get; }
+        public static IMapper Mapper { get; }
 
         public static Models.Client ToModel(this Documents.Client client)
         {

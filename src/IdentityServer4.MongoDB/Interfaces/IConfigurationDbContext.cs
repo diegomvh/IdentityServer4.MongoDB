@@ -7,7 +7,7 @@ using MongoDB.Driver;
 
 namespace IdentityServer4.MongoDB.Interfaces
 {
-    public interface IConfigurationDbContext : IDisposable
+    public interface IConfigurationDbContext
     {
         IMongoCollection<Documents.Client> Clients { get; set; }
         IMongoCollection<Documents.IdentityResource> IdentityResources { get; set; }

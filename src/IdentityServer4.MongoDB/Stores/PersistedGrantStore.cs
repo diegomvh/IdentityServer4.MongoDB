@@ -36,7 +36,7 @@ namespace IdentityServer4.MongoDB.Stores
                     _logger.LogDebug("{persistedGrantKey} not found in database", token.Key);
 
                     var persistedGrant = token.ToDocument();
-                    _context.PersistedGrants.Add(persistedGrant);
+                    _context.PersistedGrants.InsertOne(persistedGrant);
                 }
                 else
                 {
@@ -84,7 +84,7 @@ namespace IdentityServer4.MongoDB.Stores
                 try
                 {
 
-                    _context.PersistedGrants.Remove(persistedGrant);
+                    _context.PersistedGrants.DeleteOne(d => d.Id == persistedGrant.Id);
 
                 }
                 catch(Exception ex)
@@ -102,13 +102,13 @@ namespace IdentityServer4.MongoDB.Stores
 
         public Task RemoveAllAsync(string subjectId, string clientId)
         {
-            var persistedGrants = _context.PersistedGrants.AsQueryable().Where(x => x.SubjectId == subjectId && x.ClientId == clientId).ToList();
+            var persistedGrants = _context.PersistedGrants.AsQueryable().Where(x => x.SubjectId == subjectId && x.ClientId == clientId).Select(p => p.Id).ToList();
 
             _logger.LogDebug("removing {persistedGrantCount} persisted grants from database for subject {subjectId}, clientId {clientId}", persistedGrants.Count, subjectId, clientId);
 
             try
             {
-                _context.PersistedGrants.RemoveRange(persistedGrants);
+                _context.PersistedGrants.DeleteMany(d => persistedGrants.Contains(d.Id));
 
             }
             catch (Exception ex)
@@ -124,13 +124,13 @@ namespace IdentityServer4.MongoDB.Stores
             var persistedGrants = _context.PersistedGrants.AsQueryable().Where(x =>
                 x.SubjectId == subjectId &&
                 x.ClientId == clientId &&
-                x.Type == type).ToList();
+                x.Type == type).Select(p => p.Id).ToList();
 
             _logger.LogDebug("removing {persistedGrantCount} persisted grants from database for subject {subjectId}, clientId {clientId}, grantType {persistedGrantType}", persistedGrants.Count, subjectId, clientId, type);
 
             try
             {
-                _context.PersistedGrants.RemoveRange(persistedGrants);
+                _context.PersistedGrants.DeleteMany(d => persistedGrants.Contains(d.Id));
             }
             catch (Exception ex)
             {

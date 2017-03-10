@@ -13,7 +13,7 @@ namespace IdentityServer4.MongoDB.DbContexts
     public class PersistedGrantDbContext : IPersistedGrantDbContext
     {
         private readonly OperationalStoreOptions storeOptions;
-        private readonly IMongoDatabase db;
+        public readonly IMongoDatabase Database;
 
         public PersistedGrantDbContext(IOptions<MongoOptions> mongoOptions, OperationalStoreOptions storeOptions)
         {
@@ -21,14 +21,10 @@ namespace IdentityServer4.MongoDB.DbContexts
             this.storeOptions = storeOptions;
 
             var client = new MongoClient(mongoOptions.Value.ConnectionString);
-            db = client.GetDatabase(mongoOptions.Value.DatabaseName);
-            PersistedGrants = db.GetCollection<Documents.PersistedGrant>(storeOptions.PersistedGrants);
+            Database = client.GetDatabase(mongoOptions.Value.DatabaseName);
+            PersistedGrants = Database.GetCollection<Documents.PersistedGrant>(storeOptions.PersistedGrants);
         }
 
         public IMongoCollection<Documents.PersistedGrant> PersistedGrants { get; set; }
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

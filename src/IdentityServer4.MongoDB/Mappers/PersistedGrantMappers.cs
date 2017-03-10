@@ -14,7 +14,7 @@ namespace IdentityServer4.MongoDB.Mappers
                 .CreateMapper();
         }
 
-        internal static IMapper Mapper { get; }
+        public static IMapper Mapper { get; }
 
         public static Models.PersistedGrant ToModel(this Documents.PersistedGrant token)
         {

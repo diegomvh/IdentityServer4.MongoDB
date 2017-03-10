@@ -91,16 +91,15 @@ namespace IdentityServer4.MongoDB
                 
                 using (var serviceScope = _serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
                 {
-                    using (var context = serviceScope.ServiceProvider.GetService<PersistedGrantDbContext>())
+                    var context = serviceScope.ServiceProvider.GetService<PersistedGrantDbContext>();
+                    
+                    var expired = context.PersistedGrants.AsQueryable().Where(x => x.Expiration < DateTimeOffset.UtcNow).Select(e => e.Id).ToArray();
+
+                    _logger.LogDebug("Clearing {tokenCount} tokens", expired.Length);
+
+                    if (expired.Length > 0)
                     {
-                        var expired = context.PersistedGrants.AsQueryable().Where(x => x.Expiration < DateTimeOffset.UtcNow).ToArray();
-
-                        _logger.LogDebug("Clearing {tokenCount} tokens", expired.Length);
-
-                        if (expired.Length > 0)
-                        {
-                            context.PersistedGrants.RemoveRange(expired);
-                        }
+                        context.PersistedGrants.DeleteMany(d => expired.Contains(d.Id));
                     }
                 }
             }

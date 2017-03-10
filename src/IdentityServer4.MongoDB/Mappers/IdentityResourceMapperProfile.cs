@@ -20,12 +20,10 @@ namespace IdentityServer4.MongoDB.Mappers
         public IdentityResourceMapperProfile()
         {
             // entity to model
-            CreateMap<IdentityResource, Models.IdentityResource>(MemberList.Destination)
-                .ForMember(x => x.UserClaims, opt => opt.MapFrom(src => src.UserClaims.Select(x => x )));
+            CreateMap<Documents.IdentityResource, Models.IdentityResource>(MemberList.Destination);
 
             // model to entity
-            CreateMap<Models.IdentityResource, IdentityResource>(MemberList.Source)
-                .ForMember(x => x.UserClaims, opts => opts.MapFrom(src => src.UserClaims.Select(x => x )));
+            CreateMap<Models.IdentityResource, Documents.IdentityResource>(MemberList.Source);
         }
     }
 }
