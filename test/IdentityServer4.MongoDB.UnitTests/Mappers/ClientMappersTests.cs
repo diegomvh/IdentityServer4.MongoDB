@@ -2,8 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-using System.Collections.Generic;
-using IdentityServer4.MongoDB.Documents;
 using IdentityServer4.MongoDB.Mappers;
 using Xunit;
 using Client = IdentityServer4.Models.Client;

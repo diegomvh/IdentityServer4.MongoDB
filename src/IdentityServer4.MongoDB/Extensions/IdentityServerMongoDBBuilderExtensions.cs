@@ -7,13 +7,13 @@ using IdentityServer4.Stores;
 using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using IdentityServer4.MongoDB.Interfaces;
 using IdentityServer4.MongoDB.Stores;
 using IdentityServer4.MongoDB.Services;
 using IdentityServer4.MongoDB.Options;
-using IdentityServer4.MongoDB.DbContexts;
 using IdentityServer4.MongoDB;
 using Microsoft.Extensions.Configuration;
+using IdentityServer4.MongoDB.Interfaces;
+using IdentityServer4.MongoDB.Repositories;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -24,7 +24,7 @@ namespace Microsoft.Extensions.DependencyInjection
             IConfiguration mongoConfiguration,
             Action<ConfigurationStoreOptions> storeOptionsAction = null)
         {
-            builder.Services.AddScoped<IConfigurationDbContext, ConfigurationDbContext>();
+            builder.Services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
 
             builder.Services.AddTransient<IClientStore, ClientStore>();
             builder.Services.AddTransient<IResourceStore, ResourceStore>();
@@ -61,7 +61,7 @@ namespace Microsoft.Extensions.DependencyInjection
             Action<OperationalStoreOptions> storeOptionsAction = null,
             Action<TokenCleanupOptions> tokenCleanUpOptions = null)
         {
-            builder.Services.AddScoped<IPersistedGrantDbContext, PersistedGrantDbContext>();
+            builder.Services.AddScoped<IPersistedGrantRepository, PersistedGrantRepository>();
 
             builder.Services.AddTransient<IPersistedGrantStore, PersistedGrantStore>();
             builder.Services.Configure<MongoOptions>(mongoConfiguration);

@@ -17,10 +17,10 @@ namespace IdentityServer4.MongoDB.Stores
 {
     public class ResourceStore : IResourceStore
     {
-        private readonly IConfigurationDbContext _context;
+        private readonly IConfigurationRepository _context;
         private readonly ILogger<ResourceStore> _logger;
 
-        public ResourceStore(IConfigurationDbContext context, ILogger<ResourceStore> logger)
+        public ResourceStore(IConfigurationRepository context, ILogger<ResourceStore> logger)
         {
             if (context == null) throw new ArgumentNullException(nameof(context));
 

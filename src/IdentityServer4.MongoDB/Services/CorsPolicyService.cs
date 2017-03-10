@@ -15,10 +15,10 @@ namespace IdentityServer4.MongoDB.Services
 {
     public class CorsPolicyService : ICorsPolicyService
     {
-        private readonly IConfigurationDbContext _context;
+        private readonly IConfigurationRepository _context;
         private readonly ILogger<CorsPolicyService> _logger;
 
-        public CorsPolicyService(IConfigurationDbContext context, ILogger<CorsPolicyService> logger)
+        public CorsPolicyService(IConfigurationRepository context, ILogger<CorsPolicyService> logger)
         {
             if (context == null) throw new ArgumentNullException(nameof(context));
 

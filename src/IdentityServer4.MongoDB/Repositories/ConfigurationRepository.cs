@@ -8,14 +8,14 @@ using IdentityServer4.MongoDB.Options;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
-namespace IdentityServer4.MongoDB.DbContexts
+namespace IdentityServer4.MongoDB.Repositories
 {
-    public class ConfigurationDbContext : IConfigurationDbContext
+    public class ConfigurationRepository : IConfigurationRepository
     {
         private readonly ConfigurationStoreOptions storeOptions;
         public readonly IMongoDatabase Database;
 
-        public ConfigurationDbContext(IOptions<MongoOptions> mongoOptions, ConfigurationStoreOptions storeOptions)
+        public ConfigurationRepository(IOptions<MongoOptions> mongoOptions, ConfigurationStoreOptions storeOptions)
         {
             if (storeOptions == null) throw new ArgumentNullException(nameof(storeOptions));
             this.storeOptions = storeOptions;

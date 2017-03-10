@@ -6,8 +6,8 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using IdentityServer4.MongoDB.DbContexts;
 using IdentityServer4.MongoDB.Options;
+using IdentityServer4.MongoDB.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
@@ -91,7 +91,7 @@ namespace IdentityServer4.MongoDB
                 
                 using (var serviceScope = _serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
                 {
-                    var context = serviceScope.ServiceProvider.GetService<PersistedGrantDbContext>();
+                    var context = serviceScope.ServiceProvider.GetService<PersistedGrantRepository>();
                     
                     var expired = context.PersistedGrants.AsQueryable().Where(x => x.Expiration < DateTimeOffset.UtcNow).Select(e => e.Id).ToArray();
 

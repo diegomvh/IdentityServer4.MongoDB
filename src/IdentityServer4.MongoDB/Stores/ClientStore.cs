@@ -16,10 +16,10 @@ namespace IdentityServer4.MongoDB.Stores
 {
     public class ClientStore : IClientStore
     {
-        private readonly IConfigurationDbContext _context;
+        private readonly IConfigurationRepository _context;
         private readonly ILogger<ClientStore> _logger;
 
-        public ClientStore(IConfigurationDbContext context, ILogger<ClientStore> logger)
+        public ClientStore(IConfigurationRepository context, ILogger<ClientStore> logger)
         {
             if (context == null) throw new ArgumentNullException(nameof(context));
 

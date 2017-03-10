@@ -17,10 +17,10 @@ namespace IdentityServer4.MongoDB.Stores
 {
     public class PersistedGrantStore : IPersistedGrantStore
     {
-        private readonly IPersistedGrantDbContext _context;
+        private readonly IPersistedGrantRepository _context;
         private readonly ILogger _logger;
 
-        public PersistedGrantStore(IPersistedGrantDbContext context, ILogger<PersistedGrantStore> logger)
+        public PersistedGrantStore(IPersistedGrantRepository context, ILogger<PersistedGrantStore> logger)
         {
             _context = context;
             _logger = logger;
