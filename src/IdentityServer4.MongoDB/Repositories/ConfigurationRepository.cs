@@ -22,6 +22,7 @@ namespace IdentityServer4.MongoDB.Repositories
 
             var client = new MongoClient(mongoOptions.Value.ConnectionString);
             Database = client.GetDatabase(mongoOptions.Value.DatabaseName);
+            
             Clients = Database.GetCollection<Documents.Client>(storeOptions.Clients);
             IdentityResources = Database.GetCollection<Documents.IdentityResource>(storeOptions.IdentityResources);
             ApiResources = Database.GetCollection<Documents.ApiResource>(storeOptions.ApiResources);
