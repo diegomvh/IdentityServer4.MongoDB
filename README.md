@@ -13,7 +13,7 @@ This package supports the IdentityServer functionality.
             var config = Configuration.GetSection("MongoDbRepository");
 
             services.AddIdentityServer()
-                .AddTemporarySigningCredential()
+                .AddDeveloperSigningCredential()
                 .AddConfigurationStore(config)
                 .AddOperationalStore(config);
         }
